@@ -42,6 +42,9 @@ function conAttesa(p,ms){
 self.addEventListener('fetch',e=>{
   const req=e.request;
   if(req.method!=='GET') return;
+  /* v2.09: lo strumento per leggere i titoli dalle copertine (OCR) si scarica da jsDelivr: il browser lo gestisce da solo,
+     senza l'attesa di 8 secondi qui sotto (i file sono grandi) */
+  try{ if(/(^|\.)jsdelivr\.net$/.test(new URL(req.url).hostname)) return }catch(err){}
   const apertura = req.mode==='navigate';
   e.respondWith((async()=>{
     const c=await caches.open(CACHE);
